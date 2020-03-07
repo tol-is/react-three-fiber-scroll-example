@@ -1,15 +1,29 @@
-import React, { Suspense, useCallback, useEffect, useRef } from 'react';
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { InView } from 'react-intersection-observer';
 import { useSpring, a } from 'react-spring/three';
 import { Canvas } from 'react-three-fiber';
 
 import AppContext from './AppContext';
 import { PlaneImage } from './PlaneImage';
+import { PlaneFlat } from './PlaneFlat';
 import { Box } from './Box';
 
 const Scene = () => {
   return (
     <>
+      <Box offset={-1} factor={-0.1}>
+        <PlaneFlat
+          args={[2200, 900]}
+          rotation={[0, 0, Math.PI / 8]}
+          color={'#000'}
+        />
+      </Box>
       <Box offset={0} factor={1}>
         <PlaneImage
           src="/images/yingchih-jbdu2eByy1s-unsplash.jpg"
@@ -17,34 +31,19 @@ const Scene = () => {
         />
       </Box>
       <Box offset={1} factor={1}>
-        <mesh>
-          <planeGeometry attach="geometry" args={[500, 300]} />
-          <a.meshBasicMaterial attach="material" color={'#240072'} />
-        </mesh>
+        <PlaneFlat args={[500, 300]} color={'#240072'} />
       </Box>
       <Box offset={2} factor={1}>
-        <mesh>
-          <planeGeometry attach="geometry" args={[500, 300]} />
-          <a.meshBasicMaterial attach="material" color={'#00FFD1'} />
-        </mesh>
+        <PlaneFlat args={[500, 300]} color={'#00FFD1'} />
       </Box>
       <Box offset={3} factor={1}>
-        <mesh>
-          <planeGeometry attach="geometry" args={[500, 300]} />
-          <a.meshBasicMaterial attach="material" color={'#00EEFF'} />
-        </mesh>
+        <PlaneFlat args={[500, 300]} color={'#00EEFF'} />
       </Box>
       <Box offset={4} factor={1}>
-        <mesh>
-          <planeGeometry attach="geometry" args={[500, 300]} />
-          <a.meshBasicMaterial attach="material" color={'#72006B'} />
-        </mesh>
+        <PlaneFlat args={[500, 300]} color={'#72006B'} />
       </Box>
       <Box offset={5} factor={1}>
-        <mesh>
-          <planeGeometry attach="geometry" args={[500, 300]} />
-          <a.meshBasicMaterial attach="material" color={'#AEFF00'} />
-        </mesh>
+        <PlaneFlat args={[500, 300]} color={'#AEFF00'} />
       </Box>
     </>
   );
@@ -52,6 +51,8 @@ const Scene = () => {
 
 const App = () => {
   const scrollArea = useRef();
+
+  const [events, setEvents] = useState();
 
   const zoom = 1;
 
@@ -95,6 +96,7 @@ const App = () => {
         pixelRatio={1}
         orthographic
         camera={{ zoom: zoom, position: [0, 0, 250] }}
+        onCreated={state => setEvents(state.events)}
       >
         <AppContext.Provider
           value={{
@@ -114,6 +116,7 @@ const App = () => {
         className="scroll-area"
         onScroll={onScroll}
         onMouseMove={onMouseMove}
+        {...events}
       >
         {new Array(6).fill().map((_, index) => (
           <InView

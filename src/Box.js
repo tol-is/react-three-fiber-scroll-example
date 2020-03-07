@@ -13,7 +13,7 @@ function Box({ children, offset = 0, factor = 1, ...props }) {
   offset = offset !== undefined ? offset : parentOffset;
 
   useFrame(() => {
-    ref.current.position.y = top.value;
+    ref.current.position.y = top.value * factor;
   });
 
   return (
