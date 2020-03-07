@@ -1,0 +1,29 @@
+{
+  "name": "react-three-first",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-intersection-observer": "^8.26.1",
+    "react-scripts": "^3.4.0",
+    "react-spring": "^8.0.27",
+    "react-three-fiber": "^4.0.19",
+    "three": "^0.114.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "PORT=8000 react-scripts start ",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
