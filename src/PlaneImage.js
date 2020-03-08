@@ -1,28 +1,38 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useMemo, useState, useRef } from 'react';
 import { useLoader, useFrame } from 'react-three-fiber';
 import { useSpring } from 'react-spring/three';
-import { TextureLoader } from 'three';
+import { TextureLoader, LinearFilter } from 'three';
+
+import { useAppContext } from './AppContext';
 
 import './PlaneImageMaterial';
 
 export const PlaneImage = ({ src, args, ...props }) => {
   const texture = useLoader(TextureLoader, src);
+
+  const { top } = useAppContext();
+
+  useMemo(() => (texture.minFilter = LinearFilter), [texture]);
+
   const material = useRef();
 
   const [hovered, setHover] = useState(false);
+
   const hover = useCallback(() => {
-    console.log('hover');
     setHover(true);
   }, []);
   const unhover = useCallback(() => {
-    console.log('unhover');
     setHover(false);
   }, []);
 
-  const { materialScale } = useSpring({ materialScale: hovered ? 0.15 : 0.0 });
+  const { materialScale } = useSpring({ materialScale: hovered ? 0 : 0.2 });
 
+  let last = top.value;
   useFrame(() => {
+    material.current.opacity = 1.0;
+    material.current.shift = (top.value - last) / 75;
     material.current.scale = materialScale.value;
+    last = top.value;
   });
 
   return (
@@ -33,6 +43,7 @@ export const PlaneImage = ({ src, args, ...props }) => {
         attach="material"
         map={texture}
         transparent
+        opacity={1}
       />
     </mesh>
   );

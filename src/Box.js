@@ -8,12 +8,12 @@ const boxContext = createContext(0);
 function Box({ children, offset = 0, factor = 1, ...props }) {
   const ref = useRef();
   const { offset: parentOffset, sectionHeight } = useBoxContext();
-  const { top } = useAppContext();
+  const { zoom, top } = useAppContext();
 
   offset = offset !== undefined ? offset : parentOffset;
 
   useFrame(() => {
-    ref.current.position.y = top.value * factor;
+    ref.current.position.y = (top.value / zoom) * factor;
   });
 
   return (
